@@ -1,0 +1,29 @@
+create schema gs;
+
+create table gs.customer(cust_name varchar(40),cust_address varchar(100),PRIMARY KEY(cust_name,cust_address));
+
+create table gs.baker(baker_name varchar(40),baker_address varchar(100),PRIMARY KEY(baker_name));
+
+create table gs.cookie(cookie_name varchar(40),PRIMARY KEY(cookie_name));
+
+create table gs.council(council_name varchar(40),baker_name varchar(40), PRIMARY KEY(council_name), FOREIGN KEY(baker_name) REFERENCES gs.baker(baker_name));
+
+create table gs.member(member_name varchar(40),member_address varchar(100),PRIMARY KEY(member_name,member_address));
+
+create table gs.girl(girl_name varchar(40),girl_address varchar(100),girl_rank varchar(40), PRIMARY KEY(girl_name,girl_address),FOREIGN KEY(girl_name,girl_address) REFERENCES gs.member(member_name,member_address));
+
+create table gs.leader(leader_name varchar(40),leader_address varchar(100),PRIMARY KEY(leader_name,leader_address),FOREIGN KEY(leader_name,leader_address) REFERENCES gs.member(member_name,member_address));
+
+create table gs.serviceUnit(council_name varchar(40),su_number varchar(10),su_name varchar(40), PRIMARY KEY(council_name,su_number), FOREIGN KEY(council_name) REFERENCES gs.council(council_name));
+
+create table gs.troop(su_number varchar(10),council_name varchar(40),troop_number varchar(10),PRIMARY KEY(su_number,council_name,troop_number),FOREIGN KEY(council_name,su_number) REFERENCES gs.serviceUnit(council_name,su_number));
+
+create table gs.offers(cookie_name varchar(40),baker_name varchar(40),PRIMARY KEY(cookie_name,baker_name),FOREIGN KEY(cookie_name) REFERENCES gs.cookie(cookie_name),FOREIGN KEY(baker_name) REFERENCES gs.baker(baker_name));
+
+create table gs.sells(council_name varchar(40),cookie_name varchar(40),price varchar(10),PRIMARY KEY(council_name,cookie_name),FOREIGN KEY(council_name) REFERENCES gs.council(council_name),FOREIGN KEY(cookie_name) REFERENCES gs.cookie(cookie_name));
+
+create table gs.belongs(member_name varchar(40),member_address varchar(100),troop_number varchar(10),su_number varchar(10),council_name varchar(40),PRIMARY KEY(member_name,member_address,troop_number,su_number,council_name),FOREIGN KEY(member_name,member_address) REFERENCES gs.member(member_name,member_address),FOREIGN KEY(su_number,council_name,troop_number) REFERENCES gs.troop(su_number,council_name,troop_number));
+
+create table gs.shopsales(cookie_name varchar(40),troop_number varchar(10),su_number varchar(10),council_name varchar(40),quantity varchar(10),date varchar(15),PRIMARY KEY(cookie_name,troop_number,su_number,council_name,date),FOREIGN KEY(cookie_name) REFERENCES gs.cookie(cookie_name),FOREIGN KEY(su_number,council_name,troop_number) REFERENCES gs.troop(su_number,council_name,troop_number));
+
+create table gs.indsales(cookie_name varchar(40),cust_name varchar(40),cust_address varchar(100),girl_name varchar(40),girl_address varchar(100), date varchar(15),quantity varchar(10),PRIMARY KEY(cookie_name,cust_name,cust_address,girl_name,girl_address,date),FOREIGN KEY(cookie_name) REFERENCES gs.cookie(cookie_name),FOREIGN KEY(cust_name,cust_address) REFERENCES gs.customer(cust_name,cust_address),FOREIGN KEY(girl_name,girl_address) REFERENCES gs.girl(girl_name,girl_address));
