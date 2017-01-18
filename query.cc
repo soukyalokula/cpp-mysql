@@ -19,7 +19,7 @@ int main()
 {	
 	PGconn * myDb;
 	
-	myDb = PQconnectdb("dbname=z1776873 host=students user=z1776873 password=1992Mar12");
+	myDb = PQconnectdb("dbname=z1776873 host=students user=z1776873 password=********");
 	if(PQstatus(myDb) != CONNECTION_OK)
     	{
       		cerr<<"Couldn't connect to database!\n";
